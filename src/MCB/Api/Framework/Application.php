@@ -3,32 +3,35 @@ namespace MCB\Api\Framework;
 
 class Application
 {
-    public function run()
+    private $routes = array();
+    
+    public function setRoutes(array $routes)
     {
-        $parameters = $this->getRequestParameters($_SERVER['REQUEST_METHOD']);
-        
-        $controller_instance = new \MCB\Api\Controller\TestController();
-        $method = 'get';
-        
-        call_user_func_array(array($controller_instance, $method), $parameters);
+        $this->routes = $routes;
     }
     
-    private function getRequestParameters($method)
+    public function run()
     {
-        $parameters = array();
+        $path_info = '/';
+        $path_info = (isset($_SERVER['PATH_INFO'])) ? $_SERVER['PATH_INFO'] : $path_info;
+        $path_info = (isset($_SERVER['ORIG_PATH_INFO'])) ? $_SERVER['ORIG_PATH_INFO'] : $path_info;
         
-        switch (strtoupper($method)) {
-            case 'GET':
-                $parameters = $_GET;
-            break;
-            case 'POST':
-                $parameters = $_POST;
-            break;
-            case 'PUT':
-                parse_str(file_get_contents('php://input', $parameters));
-            break;
+        foreach ($this->routes as $route => $handler) {
+            $pattern = '#^/?' . $route . '/?$#';
+            if (preg_match($pattern, $path_info, $parameters) && false !== strpos(':', $handler)) {
+                $route = array_shift($parameters);
+                list($controller, $action) = explode(':', $handler);
+                break;
+            }
         }
         
-        return $parameters;
+        if (isset($controller, $action) && is_callable(array($controller, $action))) {
+            $controller_instance = new $controller;
+            call_user_func_array(array($controller_instance, $action), $parameters);
+        }
+        else {
+            header('HTTP/1.0 404 Not Found');
+            die('No matching route.');
+        }
     }
 }

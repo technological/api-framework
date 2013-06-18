@@ -3,7 +3,7 @@ namespace MCB\Api\Controller;
 
 class TestController
 {
-    public function get()
+    public function index()
     {
         echo 'Hello, world!';
     }
