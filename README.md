@@ -6,13 +6,13 @@ This is a simple API framework that should help you get APIs and web services up
 
 This is version 2 of the framework and currently in heavy development, but the roadmap is as follows:
 
-- [ ] Router
-- [ ] Sample controller for testing purposes
-- [ ] Different response views (initially JSON and XML)
-- [ ] Authentication options
-    - [ ] HTTP basic authentication
-    - [ ] OAuth
-- [ ] Rate-limiting
+- Router
+- Sample controller for testing purposes
+- Different response views (initially JSON and XML)
+- Authentication options
+    - HTTP basic authentication
+    - OAuth
+- Rate-limiting
 
 There will be no model layer. This is by design.
 This is so developers can use the framework in existing PHP applications, or implement their own preferred implementations, whether that be their own hard-crafted model classes or a fully-fledged ORM.
