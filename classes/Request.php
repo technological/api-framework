@@ -22,7 +22,7 @@ class Request
     public $method;
     
     /**
-     * Any paraemeters sent with the request.
+     * Any parameters sent with the request.
      *
      * @var array
      */
